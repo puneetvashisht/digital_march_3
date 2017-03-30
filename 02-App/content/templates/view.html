@@ -1,1 +1,32 @@
-<h1>View Poll Page</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1 class="text-center text-primary">View Poll Page</h1>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="well well-lg">
+                <strong>Question</strong><br/>{{pollService.poll.question}}
+            </div>
+
+            <p class="lead">Please select one of the following options:</p>
+            <form>
+                <div class="radio" ng-repeat="choice in pollService.poll.choices">
+                    <!--<label>
+                        <input type="radio" ng-model="selectedValue" value="Mango"/>Mango
+                    </label><br/>
+                    -->
+                    <label>
+                        <input type="radio" name="choice" ng-model="$parent.pollService.poll.userVote" value={{choice.text}} />
+                        {{choice.text}}
+                    </label><br/>
+                    
+                </div>
+                    <!--<h2>SelectedOption: {{pollService.poll.userVote}}</h2>-->
+                <hr/>
+                <a href="#/pollList" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to Poll List</a>
+                <button class="btn btn-primary pull-right" ng-click="votePoll(pollService.poll)">Vote <span>&raquo;</span></button>
+            </form>
+        </div>
+    </div>
+</div>
