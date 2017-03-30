@@ -1,12 +1,24 @@
 var app = angular.module('app', ['ngRoute']);
 
-app.controller('listCtrl', function(){
+app.controller('listCtrl', function($http, $scope){
     console.log("List controller");
+    $http({
+        url: "/fetchPolls",
+        method: "get"
+    }).success(function(res){
+        console.log("Data fetched successfully from server");
+        console.log(res)
+        if(res.success){
+            $scope.polls = res.polls;
+        }
+    }).error(function(){
+        console.log("Error in fetching polls from server");
+    })
 })
 
 app.controller('createCtrl', function($scope, $http, $location){
     console.log("create controller");
-    $scope.poll = {question:"ABCD", choices: [{text: "A"},{text:"B"}]};
+    $scope.poll = {question:"", choices: [{text: ""},{text:""}]};
     $scope.addChoice = function(){
         console.log("add new choice");
         console.log($scope.poll)

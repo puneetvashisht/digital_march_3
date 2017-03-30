@@ -1,1 +1,22 @@
-<h1>Poll list page</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <h1 class="text-center text-primary">Polls</h1>
+            <hr/>
+            <form class="form-inline">
+            <div class="form-group">
+            <button class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> New Poll</button>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search poll"/>
+            </div>
+            </form>
+            <hr/>
+            <ul class="list-unstyled">
+                <li ng-repeat="poll in polls"><a ng-click=viewPoll()>{{poll.question}}</a></li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
