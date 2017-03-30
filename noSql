@@ -1,0 +1,317 @@
+A NoSQL (often interpreted as Not only SQL) database provides a mechanism for storage and retrieval of data that is modeled in MEANs, other than the tabular relations used in relational databases.
+
+
+MongoDB is a cross-platform, document oriented database that provides, high performance, high availability, and easy scalability. MongoDB works on concept of collection and document.
+
+
+Database
+	Database is a physical container for collections. Each database gets its own set of files on the file system. A single MongoDB server typically has multiple databases.
+	
+Collection
+	Collection is a group of MongoDB documents. It is the equivalent of an RDBMS table. A collection exists within a single database. Collections do not enforce a schema. Documents within a collection can have different fields. Typically, all documents in a collection are of similar or related purpose.
+
+Document
+	A document is a set of key-value pairs.
+	Documents have dynamic schema. 
+	Dynamic schema means that documents in the same collection do not need to have the same set of fields or structure, and common fields in a collection's documents may hold different types of data.
+	
+	Below given table shows the relationship of RDBMS terminology with MongoDB
+
+
+
+Database Terminology
+
+
+		|==========================================|==============================================================================|
+		|										                                          |
+		|	SQL Terms/concepts				MongoDB/concepts	                                          |
+		|										                                          |
+		|==========================================|==============================================================================|
+		|	Database					Database		                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Table						Collection		                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Row						Document		                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Column						Field			                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Index						Index			                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Table Joins					Embeded Document & Linking                                        |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Primary Key					Primary Key (Default key _id provided by mongodb itself)	  |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Transactions Begin, Commit/Rollback		NA			                                          |
+		|------------------------------------------|------------------------------------------------------------------------------|
+		|	Schema						NA			                                          |
+		|==========================================|==============================================================================|
+
+
+
+Sample document
+	Below given example shows the document structure of a blog site which is simply a comma separated key value pair.
+	
+	{
+	   _id		: ObjectId(7df78ad8902c)
+	   title	: 'MongoDB Overview', 
+	   description: ' MongoDB is no sql database',
+	   by		: 'Some Vendor',
+	   url		: 'http://www.someurl.com',
+	   tags		: ['mongodb', 'database', 'NoSQL'],
+	   likes	: 100, 
+	   comments: [	
+	      {
+	         user:'user1',
+	         message: 'My first comment',
+	         dateCreated: new Date(2005,1,20,2,15),
+	         like: 0 
+	      },
+	      {
+	         user:'user2',
+	         message: 'My second comments',
+	         dateCreated: new Date(2011,1,25,7,45),
+	         like: 5
+	      }
+	   ]
+	}
+	
+	_id is a 12 bytes hexadecimal number which assures the uniqueness of every document. You can provide _id while inserting the document. If you didn't provide then MongoDB provide a unique id for every document. These 12 bytes first 4 bytes for the current timestamp, next 3 bytes for machine id, next 2 bytes for process id of mongodb server and remaining 3 bytes are simple incremental value
+	
+Install MongoDB 
+	download and install
+	
+	
+	under $MongoDB/bin folder
+		it contains only 10+ executable files (exe) in the bin folder
+		
+	It’s recommended to add $MongoDB/bin to Windows environment variable, so that you can access the MongoDB’s commands in command prompt easily.
+	(in my case it is automatically added when i installed mongodb)
+	
+	
+	MongoDB need a folder (data directory) to store its data. By default, it will store in “C:\data\db“, create this folder manually. MongoDB won’t create it for you. You can also specify an alternate data directory with --dbpath option
+	create a file in F:\NodeJS\MongoTest\mongo.config
+	
+	
+	
+	create db directory -> data
+	cmd-> mongod --dbpath data
+	
+	
+		##store data here
+		dbpath=F:\NodeJS\MongoTest\data
+		 
+		##all output go here
+		logpath=F:\NodeJS\MongoTest\mongo.log
+		 
+		## defaults to 27017 if not specified
+		port = 27017
+		
+	Run MongoDB server
+		F:\NodeJS\MongoTest>mongod.exe --config F:\NodeJS\MongoTest\mongo.config
+		
+	connect
+		F:\NodeJS\MongoTest\data\myData>mongo
+		
+		you will have on cmd 
+		
+			F:\NodeJS\MongoTest\data\myData>mongo
+			MongoDB shell version: 2.6.0
+			connecting to: test
+			
+			for help type -> db.help()
+	
+
+	MongoDB as Windows Service		
+		C:>mongod --config F:\NodeJS\MongoTest\mongo.config --install
+		
+		remove
+			C:>mongod --remove
+			
+
+	Syntax:
+		use mydb				: create and switch to database names as mydb
+		db					: check your current selected database
+		show dbs				: check databases list
+		
+		use mydb
+		db.dropDatabase()			: drop database
+		
+		db.createCollection("collectionName")	: create collection	: 
+		show collections			: check collections
+		
+			In mongodb you don't need to create collection. MongoDB creates collection automatically, when you insert some document.
+				db.tutorialspoint.insert({"name" : "tkhts"})
+				show collections
+		
+		db.COLLECTION_NAME.drop()		: drop collection
+		
+		
+		
+	Datatypes
+		String : This is most commonly used datatype to store the data. String in mongodb must be UTF-8 valid.
+		
+		Integer : This type is used to store a numerical value. Integer can be 32 bit or 64 bit depending upon your server.
+		
+		Boolean : This type is used to store a boolean (true/ false) value.
+		
+		Double : This type is used to store floating point values.
+		
+		Min/ Max keys : This type is used to compare a value against the lowest and highest BSON elements.
+		
+		Arrays : This type is used to store arrays or list or multiple values into one key.
+		
+		Timestamp : ctimestamp. This can be handy for recording when a document has been modified or added.
+		
+		Object : This datatype is used for embedded documents.
+		
+		Null : This type is used to store a Null value.
+		
+		Symbol : This datatype is used identically to a string however, it's generally reserved for languages that use a specific symbol type.
+		
+		Date : This datatype is used to store the current date or time in UNIX time format. You can specify your own date time by creating object of Date and passing day, month, year into it.
+		
+		Object ID : This datatype is used to store the document’s ID.
+		
+		Binary data : This datatype is used to store binay data.
+		
+		Code : This datatype is used to store javascript code into document.
+		
+		Regular expression : This datatype is used to store regular expression
+		
+		
+	Insert Document
+		db.COLLECTION_NAME.insert(document)
+			db.mydb.insert({
+			   _id: ObjectId(7df78ad8902c),
+			   title: 'MongoDb Demo', 
+			   description: 'MongoDB demo',
+			   by: 'tkhts',
+			   url: 'http://www.tkhts.com',
+			   tags: ['mongodb', 'database', 'NoSQL'],
+			   likes: 124
+		})
+		
+		_id: ObjectId(7df78ad8902c),
+			12 bytes hexadecimal number unique for every document divided as follows:
+		_id: ObjectId(4 bytes timestamp, 3 bytes machine id, 2 bytes process id, 3 bytes incrementer)
+		
+		
+		
+		demo:
+		
+			db.postCollection.insert([
+			{
+			   title: 'MongoDb Demo', 
+			   description: 'MongoDB demo',
+			   by: 'tkhts',
+			   url: 'http://www.tkhts.com',
+			   tags: ['mongodb', 'database', 'NoSQL'],
+			   likes: 124
+			},
+			{
+			   title: 'NoSQL Database', 
+			   description: 'NoSQL database doesn't have tables',
+			   by: 'tkhts',
+			   url: 'http://www.tkhts.com',
+			   tags: ['mongodb', 'database', 'NoSQL'],
+			   likes: 20, 
+			   comments: [	
+			      {
+			         user:'user1',
+			         message: 'My first comment',
+			         dateCreated: new Date(2011,10,10,2,35),
+			         like: 20 
+			      }
+			   ]
+			}
+			])
+			
+			
+		To insert the document you can use db.post.save(document) also. If you don't specify _id in the document then save() method will work same as insert() method. If you specify _id then it will replace whole data of document containing _id as specified in save() method.
+		
+		
+	Query Document
+		db.COLLECTION_NAME.find()
+			display all the documents in a non structured way.
+			
+		db.mycol.find().pretty()
+			To display the results in a formatted way, you can use pretty() method
+			
+		
+	< and >		
+		db.emp.find({"age":{$lt:60}}).pretty();// lt for less than
+		db.emp.find({"age":{$lte:60}}).pretty();// lte for less than and equals to
+		
+		
+		
+	AND in MongoDB
+		In the find() method if you pass multiple keys by separating them by ',' then MongoDB treats it AND condition
+			where key1='value1' AND key2='value2'
+		
+		db.mycol.find({"key1":"value1", "key2":"value2"}).pretty()
+		
+	OR in MongoDB
+		where key>10 AND (key1 = 'value1' OR key2 = 'value2')
+		
+		db.mycol.find({"key": {$gt:10}, $or: [{"key1": "value1"},{"key2": "value2"}]}).pretty()
+		
+		
+		
+	Update Document
+		MongoDB's update() and save() methods are used to update document into a collection. 
+		The update() method update values in the existing document while the save() method replaces the existing document with the document passed in save() method.
+		
+			 update()
+			 	db.COLLECTION_NAME.update({'key1':'value1'}, {$set:{'key2':'value2'}})
+			 	
+			 	
+			 By default mongodb will update only single document, to update multiple you need to set a paramter 'multi' to true.
+			 	db.COLLECTION_NAME.update({'key1':'value1'}, {$set:{'key2':'value2'}},{multi:true})
+			 	
+	Save Method
+		db.COLLECTION_NAME.save({_id:ObjectId(),NEW_DATA})
+		
+		db.mycol.save({"_id" : ObjectId(5983548781331adf45ec7), "key1":"value1", "key2":"value2"})
+
+
+	remove Method
+	
+		MongoDB's remove() method is used to remove document from the collection. remove() method accepts two parameters. One is deletion criteria and second is justOne flag
+		
+			deletion criteria	: (Optional) deletion criteria according to documents will be removed.
+			justOne			: (Optional) if set to true or 1, then remove only one document.
+			
+		db.COLLECTION_NAME.remove(DELLETION_CRITTERIA)
+		db.mycol.remove({'key1':'value1'})
+		
+		db.COLLECTION_NAME.remove(DELETION_CRITERIA,1)
+		db.mycol.remove({'key2':'value2'}, 1)
+		
+		
+	sort Method
+	
+		db.COLLECTION_NAME.find().sort({KEY:1})
+		
+		Following example will display the documents sorted by key in descending order.
+		
+		db.mycol.find({},{"key":1,_id:0}).sort({"key":-1})
+		
+		
+		
+	Modify pieces of document
+		$inc - increment a particular value by a certain amount
+		$set - set a particular value
+		$unset - delete a particular field (v1.3+)
+		$push - append a value to an array
+		$pushAll - append several values to an array
+		$addToSet - adds value to the array only if its not in the array already
+		$pop - removes the last element in an array
+		$pull - remove a value(s) from an existing array
+		$pullAll - remove several value(s) from an existing array
+		$rename - renames the field
+		$bit - bitwise operations
+		
+		
+		db.COLLECTION_NAME.update({'key1':'value1'}, {$set:{'key2':'value2'}})
+		db.COLLECTION_NAME.update({key:2}, {$push:{docs:{doc2:1}}}, {w:1}, function(err, result) {});
+		

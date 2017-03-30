@@ -1,0 +1,46 @@
+Application
+	M - Mongo=> noSql database, javascript object, json
+	E - Express=> node server
+	A - AngularJS=> javascript framework
+	N - Node=> javascript that runs on server side
+	
+Mongo, Node, IDE
+	JavaScript - IDE
+		WebStorm(server) - 30days
+		Brackets(server) - plugins
+		Sublime
+		Notepad++
+		textpad
+		
+		VisualStudioCode(no in-built server)
+		
+		
+Basic page-Home page
+	Welcome User
+
+NPM-NodePackageManager
+	npm init
+		package.json
+	npm install express --save
+
+
+
+
+
+	Create four pages in AngularJS
+		PollList
+		CreatePoll - done
+		ViewPoll
+		PollResult
+
+	Take lunch break at 1:00PM
+
+	Mongo
+		Download and install
+
+		Run database
+			create a directory - data
+			cmd - mongod --dbpath 'path to data'
+
+		connect to database
+			cmd - mongo
